@@ -1,53 +1,58 @@
 import React from "react";
 import {data} from "./data";
+import "./index.css"
 
 
 export const  App = () => {
 
-  const arrIndex = [];
-  // const noMembers= 0;
-  // const groupSize = data.length/noMembers;
+  const randomIdArr = [];
+  const groupSize = 0;
   
-  const arrIndexGenetator = ()=>{
-    for(var i =0; i < data.length; i++) {
-      arrIndex.push(i);
+  const changeId = () =>{
+
+    const randomId = Math.floor(Math.random() * data.length);
+
+    if(randomIdArr.indexOf(randomId)  === -1 ){
+      randomIdArr.push(randomId);
     }
-  //  
+
+    else{
+      changeId();
+    }
+
+    return randomIdArr;
+
   }
 
-  const Randomize = () => {
-    arrIndexGenetator();
+  const Group = () => {
 
-    data.map((datum, index, data)=>{
+    data.map( changeId);
 
-      for(var a =0; a < data.length; a++) {
-        if(arrIndex.indexOf(datum.id) !== -1) {
-      
-          datum.id = Math.floor(Math.random() * data.length);
-          arrIndex.pop(datum.id);
-        }
-      }
-      return data;
-
-    })
+    console.log(randomIdArr);
   };
 
-  console.log(data);
+  
 
   return (
     <div >
     
         <h1>Please input your required number per group:</h1>
 
-        <label  >Number per group</label>
+        <label> Number per group</label> &nbsp; &nbsp;
 
-        <input type="number" name="numberPerGroup"  required/>
+        <input type="number" name="numberPerGroup" value={groupSize}  required/> &nbsp; &nbsp;
 
-
-        <button onClick={Randomize }>Randomize</button>
+        <button onClick={Group }> Group</button>
         
-        <div>
-
+        <div  style={{display:"flex", flexWrap:"wrap"}} >
+          {data.map((datum)=>{
+            return(
+              <div className="items">
+                <h3>{`${datum.first_name} ${datum.last_name}`}</h3>
+                <p>{datum.email}</p>
+              </div>
+            )
+          })}
         </div>
     </div>
     
